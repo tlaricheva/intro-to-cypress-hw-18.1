@@ -1,7 +1,7 @@
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
-  reporter: "mochawesome",
+   reporter: "mochawesome",
   reporterOptions: {
     reportDir: "cypress/reports",
     overwrite: false,
@@ -10,8 +10,15 @@ module.exports = defineConfig({
   },
 
   e2e: {
+    baseUrl: "https://qauto.forstudy.space",
+    env: {
+      basicAuthUser: "guest",
+      basicAuthPass: "welcome2qauto",
+      appName: "qauto",
+          },
     setupNodeEvents(on, config) {
       return config;
     },
   },
 });
+
