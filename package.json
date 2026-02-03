@@ -4,9 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "cy:open": "cypress open",
-  "cy:run": "cypress run"
-  },
+    "cy:open": "npx cypress open",
+    "cy:run": "npx cypress run",
+    "cy:qauto": "npx cypress run --config-file cypress.config.qauto.js",
+    "cy:qauto2": "npx cypress run --config-file cypress.config.qauto2.js",
+
+    "report:merge": "mochawesome-merge cypress/reports/mochawesome*.json -o cypress/reports/report.json",
+    "report:html": "marge cypress/reports/report.json -f report -o cypress/reports",
+    "report": "npm run report:merge && npm run report:html"
+
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tlaricheva/intro-to-cypress-hw-18.1.git"
@@ -20,6 +27,10 @@
   },
   "homepage": "https://github.com/tlaricheva/intro-to-cypress-hw-18.1#readme",
   "devDependencies": {
-    "cypress": "^15.8.2"
+    "cypress": "^15.8.2",
+    "mochawesome": "^7.1.4",
+    "mochawesome-merge": "^5.1.0",
+    "mochawesome-report-generator": "^6.3.2"
   }
 }
+
