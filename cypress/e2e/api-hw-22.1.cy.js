@@ -20,32 +20,29 @@ describe("HW 22.1 - API testing with Cypress", () => {
       model: "A6",
       mileage: 123,
     };
-
-    // 1) Register + login (same flow as before)
+    
     RegisterPage.open();
     RegisterPage.openRegistration();
     RegisterPage.fillForm(user);
     RegisterPage.submit();
     RegisterPage.assertRegistered();
 
-    // 2) Intercept POST /api/cars
+    
     cy.intercept("POST", "**/api/cars*").as("createCar");
-
-    // 3) Create car via UI
+    
     GaragePage.open();
     GaragePage.clickAddCar();
     GaragePage.fillCarForm(car);
     GaragePage.submitCar();
     
-    // 4) Assert interception + save created car
+    
 cy.wait("@createCar").then(({ response }) => {
   expect(response, "response exists").to.exist;
   expect([200, 201], "status code").to.include(response.statusCode);
 
   const createdCar = response.body?.data ?? response.body;
   expect(createdCar, "createdCar body").to.exist;
-
-  // 5) GET /api/cars and verify created car is in the list (HW 22.1 пункт 3)
+  
   cy.request("GET", "/api/cars").then((carsRes) => {
     expect(carsRes.status, "GET /api/cars status").to.eq(200);
 
@@ -55,8 +52,7 @@ cy.wait("@createCar").then(({ response }) => {
     const found = cars.find((c) => c.id === createdCar.id);
     expect(found, "created car is present in GET /api/cars").to.exist;
   });
-
-  // 6) POST /api/expenses (HW 22.1 пункт 4) - create expense via API
+  
   const today = new Date().toISOString().slice(0, 10);
 
   const expensePayload = {
@@ -80,15 +76,23 @@ cy.wait("@createCar").then(({ response }) => {
 
     const createdExpense = expRes.body?.data ?? expRes.body;
     expect(createdExpense, "created expense body").to.exist;
+    const formatUiDate = (iso) => {
+  const [y, m, d] = iso.split("-");
+  return `${d}.${m}.${y}`;
+};
 
-    // 7) UI check (HW 22.1 пункт 5)
+    const carName = `${car.brand} ${car.model}`;
+    const uiDate = formatUiDate(expensePayload.reportedAt);
+
     FuelExpensesPage.open();
-    FuelExpensesPage.assertExpenseVisible(expensePayload.totalCost);
-  });
-});
-
-    });
-  });
-
-
-     
+    FuelExpensesPage.assertExpenseRow({
+  carName,
+  reportedAt: expensePayload.reportedAt,
+  mileage: expensePayload.mileage,
+  liters: expensePayload.liters,
+  totalCost: expensePayload.totalCost,
+ });
+      }); 
+    });   
+  });   
+});       

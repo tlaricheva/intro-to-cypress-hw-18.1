@@ -73,4 +73,16 @@ Cypress.Commands.add("createCarByApi", ({ brand, model, mileage }) => {
       });
     });
   });
+ });
+ /**
+ * Create expense via API
+ */
+Cypress.Commands.add("createExpenseApi", (expensePayload) => {
+  return cy.request({
+    method: "POST",
+    url: "/api/expenses",
+    body: expensePayload,
+    failOnStatusCode: false,
+  });
 });
+
