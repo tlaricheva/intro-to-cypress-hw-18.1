@@ -20,6 +20,6 @@
   },
   "homepage": "https://github.com/tlaricheva/intro-to-cypress-hw-18.1#readme",
   "devDependencies": {
-    "cypress": "^15.8.2"
+    "cypress": "12.17.4"
   }
 }
