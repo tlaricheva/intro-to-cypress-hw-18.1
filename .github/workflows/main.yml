@@ -1,4 +1,4 @@
-name: Cypress in Docker (Firefox)
+name: Cypress in Docker (Chrome)
 
 on:
   push:
@@ -20,5 +20,5 @@ jobs:
       - name: Install deps
         run: npm ci
 
-      - name: Run Cypress (Firefox)
-        run: npx cypress run --browser firefox
+      - name: Run Cypress (Chrome)
+        run: npx cypress run --browser chrome
